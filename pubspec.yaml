@@ -1,0 +1,22 @@
+name: vorbis_decoder
+description: A pure Dart Ogg Vorbis audio decoder for in-memory PCM decoding.
+version: 0.0.1-dev.0
+repository: https://github.com/dotkebi/vorbis_decoder
+issue_tracker: https://github.com/dotkebi/vorbis_decoder/issues
+
+topics:
+  - audio
+  - codec
+  - decoder
+  - ogg
+  - vorbis
+
+environment:
+  sdk: ^3.3.0
+
+dependencies: {}
+
+dev_dependencies:
+  crypto: ^3.0.6
+  lints: ^5.1.1
+  test: ^1.25.15

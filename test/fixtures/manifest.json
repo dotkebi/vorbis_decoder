@@ -1,0 +1,586 @@
+{
+  "schemaVersion": 1,
+  "pcmFormat": {
+    "encoding": "IEEE-754 binary32",
+    "endianness": "little",
+    "layout": "interleaved"
+  },
+  "encoder": {
+    "name": "oggenc/libvorbis",
+    "version": "oggenc from vorbis-tools 1.4.3",
+    "serialsAreFixed": true
+  },
+  "referenceDecoders": {
+    "ffmpeg": {
+      "version": "ffmpeg version 8.1.1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "decoder": "native vorbis",
+      "trimPolicy": "decode with +skip_manual, then atrim from the first decoded-frame PTS through the final granule frame count"
+    },
+    "stbVorbis": {
+      "commit": "31c1ad37456438565541f4919958214b6e762fb4",
+      "sourceUrl": "https://raw.githubusercontent.com/nothings/stb/31c1ad37456438565541f4919958214b6e762fb4/stb_vorbis.c",
+      "sourceSha256": "4c7cb2ff1f7011e9d67950446b7eb9ca044f2e464d76bfbb0b84dd2e23e65636",
+      "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "compilerFlags": [
+        "-O2",
+        "-fno-fast-math",
+        "-ffp-contract=off"
+      ]
+    }
+  },
+  "thresholdPolicy": {
+    "comparisonLagFrames": 0,
+    "lengthMismatchAllowed": false,
+    "referenceRmsCeiling": 0.0002,
+    "referenceMaxCeiling": 0.002,
+    "dartLimitMultiplier": 4.0,
+    "minimumDartRmsLimit": 0.000005,
+    "minimumDartMaxLimit": 0.00005
+  },
+  "fixtures": [
+    {
+      "name": "one_audio_packet_zero",
+      "description": "One audio packet after the three mandatory headers; the first Vorbis audio packet produces no PCM.",
+      "categories": [
+        "tiny",
+        "one_audio_packet",
+        "silence"
+      ],
+      "sampleRate": 44100,
+      "channels": 1,
+      "sourceFrames": 0,
+      "decodedFrames": 0,
+      "audioPackets": 1,
+      "initialTrimFrames": 0,
+      "encodedBitRate": 80000,
+      "quality": 3.0,
+      "streamSerial": 13001,
+      "oggFile": "test/fixtures/ogg/one_audio_packet_zero.ogg",
+      "referenceFile": "test/fixtures/reference_ffmpeg/one_audio_packet_zero.f32le",
+      "oggBytes": 3385,
+      "referenceBytes": 0,
+      "oggSha256": "05238e75fc33202d727399484dda94998d0e0bfba4775f1b2b93b47779308ee0",
+      "referenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stbReferenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": {
+        "kind": "generated_lavfi",
+        "lavfi": "anullsrc=r=44100:cl=mono",
+        "durationSeconds": 0.0,
+        "intermediateFormat": "pcm_s16le",
+        "license": "CC0-1.0"
+      },
+      "referenceBaseline": {
+        "sampleCount": 0,
+        "rmsError": 0.0,
+        "maxAbsoluteError": 0.0,
+        "maxErrorSampleIndex": -1,
+        "channelRmsErrors": [
+          0.0
+        ],
+        "channelMaxAbsoluteErrors": [
+          0.0
+        ]
+      },
+      "dartDecoderLimits": {
+        "rmsError": 0.000005,
+        "maxAbsoluteError": 0.00005
+      }
+    },
+    {
+      "name": "tiny_tone_mono_8000",
+      "description": "Eight source frames and the minimum non-empty decode.",
+      "categories": [
+        "tiny",
+        "tone",
+        "low_sample_rate"
+      ],
+      "sampleRate": 8000,
+      "channels": 1,
+      "sourceFrames": 8,
+      "decodedFrames": 8,
+      "audioPackets": 2,
+      "initialTrimFrames": 256,
+      "encodedBitRate": 22400,
+      "quality": 3.0,
+      "streamSerial": 13002,
+      "oggFile": "test/fixtures/ogg/tiny_tone_mono_8000.ogg",
+      "referenceFile": "test/fixtures/reference_ffmpeg/tiny_tone_mono_8000.f32le",
+      "oggBytes": 2850,
+      "referenceBytes": 32,
+      "oggSha256": "7f21a742bbaa8c2b909ef6954681541fc028a07938a00479dd502eef2cb78e50",
+      "referenceSha256": "f3a2d11a448c209371a4098b3218e8e817109f42a3d12c22814c565638e02438",
+      "stbReferenceSha256": "62d4505b806af7f1000c319445d435eacc2f80b386efc941f9b6322a39ba0a52",
+      "source": {
+        "kind": "generated_lavfi",
+        "lavfi": "sine=frequency=1000:sample_rate=8000",
+        "durationSeconds": 0.001,
+        "intermediateFormat": "pcm_s16le",
+        "license": "CC0-1.0"
+      },
+      "referenceBaseline": {
+        "sampleCount": 8,
+        "rmsError": 5.90169423056607e-9,
+        "maxAbsoluteError": 1.4901161193847656e-8,
+        "maxErrorSampleIndex": 2,
+        "channelRmsErrors": [
+          5.90169423056607e-9
+        ],
+        "channelMaxAbsoluteErrors": [
+          1.4901161193847656e-8
+        ]
+      },
+      "dartDecoderLimits": {
+        "rmsError": 0.000005,
+        "maxAbsoluteError": 0.00005
+      }
+    },
+    {
+      "name": "tone_mono_8000_low",
+      "description": "Low-rate mono tone encoded at the minimum quality.",
+      "categories": [
+        "tone",
+        "mono",
+        "low_sample_rate",
+        "low_bitrate"
+      ],
+      "sampleRate": 8000,
+      "channels": 1,
+      "sourceFrames": 3200,
+      "decodedFrames": 3200,
+      "audioPackets": 14,
+      "initialTrimFrames": 256,
+      "encodedBitRate": 8000,
+      "quality": -1.0,
+      "streamSerial": 13003,
+      "oggFile": "test/fixtures/ogg/tone_mono_8000_low.ogg",
+      "referenceFile": "test/fixtures/reference_ffmpeg/tone_mono_8000_low.f32le",
+      "oggBytes": 2610,
+      "referenceBytes": 12800,
+      "oggSha256": "2e13e1fc628697bc9173b5119cd6c297f578923878382fff59b0f734231881e9",
+      "referenceSha256": "75518c665f300f4e86a4f0d9761508d546910ec3355c4c1ac85590d034d619bd",
+      "stbReferenceSha256": "d6e4401f61b74a73df32b56197c129dce6f213d7d31dad9414d408e1235e3736",
+      "source": {
+        "kind": "generated_lavfi",
+        "lavfi": "sine=frequency=440:sample_rate=8000",
+        "durationSeconds": 0.4,
+        "intermediateFormat": "pcm_s16le",
+        "license": "CC0-1.0"
+      },
+      "referenceBaseline": {
+        "sampleCount": 3200,
+        "rmsError": 1.2864074252212991e-8,
+        "maxAbsoluteError": 5.21540641784668e-8,
+        "maxErrorSampleIndex": 860,
+        "channelRmsErrors": [
+          1.2864074252212991e-8
+        ],
+        "channelMaxAbsoluteErrors": [
+          5.21540641784668e-8
+        ]
+      },
+      "dartDecoderLimits": {
+        "rmsError": 0.000005,
+        "maxAbsoluteError": 0.00005
+      }
+    },
+    {
+      "name": "tone_mono_22050_mid",
+      "description": "Conventional mono tone at 22.05 kHz.",
+      "categories": [
+        "tone",
+        "mono"
+      ],
+      "sampleRate": 22050,
+      "channels": 1,
+      "sourceFrames": 11025,
+      "decodedFrames": 11025,
+      "audioPackets": 23,
+      "initialTrimFrames": 256,
+      "encodedBitRate": 40222,
+      "quality": 3.0,
+      "streamSerial": 13004,
+      "oggFile": "test/fixtures/ogg/tone_mono_22050_mid.ogg",
+      "referenceFile": "test/fixtures/reference_ffmpeg/tone_mono_22050_mid.f32le",
+      "oggBytes": 4010,
+      "referenceBytes": 44100,
+      "oggSha256": "0f8579b7eed838a5d7127c50da0c676b279ab45509931a4c29c19e04c1d62db7",
+      "referenceSha256": "2dd1ea99a0ed660618d03133ea35c06f045114bf8cf4791255b31b0c5d00e21b",
+      "stbReferenceSha256": "09a3206c60a1acb28a65ccd3154ca226a5b8373904bb858871874dfb082fb86b",
+      "source": {
+        "kind": "generated_lavfi",
+        "lavfi": "sine=frequency=880:sample_rate=22050",
+        "durationSeconds": 0.5,
+        "intermediateFormat": "pcm_s16le",
+        "license": "CC0-1.0"
+      },
+      "referenceBaseline": {
+        "sampleCount": 11025,
+        "rmsError": 1.4227989588640924e-8,
+        "maxAbsoluteError": 5.960464477539063e-8,
+        "maxErrorSampleIndex": 1122,
+        "channelRmsErrors": [
+          1.4227989588640924e-8
+        ],
+        "channelMaxAbsoluteErrors": [
+          5.960464477539063e-8
+        ]
+      },
+      "dartDecoderLimits": {
+        "rmsError": 0.000005,
+        "maxAbsoluteError": 0.00005
+      }
+    },
+    {
+      "name": "dual_tone_stereo_44100_high",
+      "description": "Distinct left and right tones at the maximum quality.",
+      "categories": [
+        "tone",
+        "stereo",
+        "channel_coupling",
+        "high_bitrate"
+      ],
+      "sampleRate": 44100,
+      "channels": 2,
+      "sourceFrames": 26460,
+      "decodedFrames": 26460,
+      "audioPackets": 29,
+      "initialTrimFrames": 128,
+      "encodedBitRate": 499821,
+      "quality": 10.0,
+      "streamSerial": 13005,
+      "oggFile": "test/fixtures/ogg/dual_tone_stereo_44100_high.ogg",
+      "referenceFile": "test/fixtures/reference_ffmpeg/dual_tone_stereo_44100_high.f32le",
+      "oggBytes": 12150,
+      "referenceBytes": 211680,
+      "oggSha256": "4ef6168765873638a6f6150df6361c27b785a801343de17c7f0e0faecb406810",
+      "referenceSha256": "f5b835747a5ffebef1a52fbed8fcc918a802a046432ad46f8b668253845c36a3",
+      "stbReferenceSha256": "ead151ed44d963a7cda1815f62e6abd53ff1229663c0298a4fa5e8caa4bbbdba",
+      "source": {
+        "kind": "generated_lavfi",
+        "lavfi": "aevalsrc=0.45*sin(2*PI*440*t)|0.45*sin(2*PI*660*t):s=44100",
+        "durationSeconds": 0.6,
+        "intermediateFormat": "pcm_s16le",
+        "license": "CC0-1.0"
+      },
+      "referenceBaseline": {
+        "sampleCount": 52920,
+        "rmsError": 5.391190154733333e-8,
+        "maxAbsoluteError": 3.5762786865234375e-7,
+        "maxErrorSampleIndex": 12274,
+        "channelRmsErrors": [
+          5.522483306391013e-8,
+          5.256618751594967e-8
+        ],
+        "channelMaxAbsoluteErrors": [
+          3.5762786865234375e-7,
+          2.682209014892578e-7
+        ]
+      },
+      "dartDecoderLimits": {
+        "rmsError": 0.000005,
+        "maxAbsoluteError": 0.00005
+      }
+    },
+    {
+      "name": "antiphase_stereo_22050",
+      "description": "Opposite-polarity channels expose coupling sign errors.",
+      "categories": [
+        "tone",
+        "stereo",
+        "channel_coupling"
+      ],
+      "sampleRate": 22050,
+      "channels": 2,
+      "sourceFrames": 11025,
+      "decodedFrames": 11025,
+      "audioPackets": 24,
+      "initialTrimFrames": 256,
+      "encodedBitRate": 77333,
+      "quality": 4.0,
+      "streamSerial": 13006,
+      "oggFile": "test/fixtures/ogg/antiphase_stereo_22050.ogg",
+      "referenceFile": "test/fixtures/reference_ffmpeg/antiphase_stereo_22050.f32le",
+      "oggBytes": 4859,
+      "referenceBytes": 88200,
+      "oggSha256": "0bed8145ec634fce7a5c77fd6b3ec72b5013c4ed2054cc1395dbe80e25b70ff3",
+      "referenceSha256": "df0d06207d6227ef0caebecea57434c8988d9bc31e27f10d15b5e9a38caab1be",
+      "stbReferenceSha256": "d6ea468fc0c13b4539d3d182e96c61b57e72fd4dfb8ca4b943f0ede7a8a9aa52",
+      "source": {
+        "kind": "generated_lavfi",
+        "lavfi": "aevalsrc=0.45*sin(2*PI*330*t)|-0.45*sin(2*PI*330*t):s=22050",
+        "durationSeconds": 0.5,
+        "intermediateFormat": "pcm_s16le",
+        "license": "CC0-1.0"
+      },
+      "referenceBaseline": {
+        "sampleCount": 22050,
+        "rmsError": 5.0355227194663034e-8,
+        "maxAbsoluteError": 2.384185791015625e-7,
+        "maxErrorSampleIndex": 6048,
+        "channelRmsErrors": [
+          5.0251984969042306e-8,
+          5.045825817766016e-8
+        ],
+        "channelMaxAbsoluteErrors": [
+          2.384185791015625e-7,
+          2.384185791015625e-7
+        ]
+      },
+      "dartDecoderLimits": {
+        "rmsError": 0.000005,
+        "maxAbsoluteError": 0.00005
+      }
+    },
+    {
+      "name": "white_noise_stereo_48000_low",
+      "description": "Deterministic broadband white noise at low quality.",
+      "categories": [
+        "white_noise",
+        "stereo",
+        "low_bitrate",
+        "residue"
+      ],
+      "sampleRate": 48000,
+      "channels": 2,
+      "sourceFrames": 24000,
+      "decodedFrames": 24000,
+      "audioPackets": 18,
+      "initialTrimFrames": 256,
+      "encodedBitRate": 45000,
+      "quality": -1.0,
+      "streamSerial": 13007,
+      "oggFile": "test/fixtures/ogg/white_noise_stereo_48000_low.ogg",
+      "referenceFile": "test/fixtures/reference_ffmpeg/white_noise_stereo_48000_low.f32le",
+      "oggBytes": 6641,
+      "referenceBytes": 192000,
+      "oggSha256": "c647cb9ba71211d75523242613fd8f3f86769a63d1ba8a5aba5aa847b27409b9",
+      "referenceSha256": "ebc6aadec35f490a0b1310bb1cf8ce99bddf863f9ab96022828ebf4ab895f6c9",
+      "stbReferenceSha256": "40d5a8d5932938344415d3664b88263e85fc160e52029a1fbbb6655565996928",
+      "source": {
+        "kind": "generated_lavfi",
+        "lavfi": "anoisesrc=color=white:seed=42:sample_rate=48000",
+        "durationSeconds": 0.5,
+        "intermediateFormat": "pcm_s16le",
+        "license": "CC0-1.0"
+      },
+      "referenceBaseline": {
+        "sampleCount": 48000,
+        "rmsError": 5.880772836325311e-8,
+        "maxAbsoluteError": 2.980232238769531e-7,
+        "maxErrorSampleIndex": 11980,
+        "channelRmsErrors": [
+          5.880772836325311e-8,
+          5.880772836325311e-8
+        ],
+        "channelMaxAbsoluteErrors": [
+          2.980232238769531e-7,
+          2.980232238769531e-7
+        ]
+      },
+      "dartDecoderLimits": {
+        "rmsError": 0.000005,
+        "maxAbsoluteError": 0.00005
+      }
+    },
+    {
+      "name": "transients_stereo_48000",
+      "description": "Asymmetric pulse trains force short/long block changes.",
+      "categories": [
+        "transient",
+        "stereo",
+        "window_transition"
+      ],
+      "sampleRate": 48000,
+      "channels": 2,
+      "sourceFrames": 36000,
+      "decodedFrames": 36000,
+      "audioPackets": 206,
+      "initialTrimFrames": 128,
+      "encodedBitRate": 128000,
+      "quality": 4.0,
+      "streamSerial": 13008,
+      "oggFile": "test/fixtures/ogg/transients_stereo_48000.ogg",
+      "referenceFile": "test/fixtures/reference_ffmpeg/transients_stereo_48000.f32le",
+      "oggBytes": 7010,
+      "referenceBytes": 288000,
+      "oggSha256": "a020e342f8f7d154a4400d83a424843bd1044e39690a2e143d9daacc5660233c",
+      "referenceSha256": "314ab9eec346873fe059d8b9b60053bbabc017cd50e52416e6391c023ac8da56",
+      "stbReferenceSha256": "4338a94f958c136641d05e10bfa37a793b46392abfbe7bfbe8b3d2119ae5bfc3",
+      "source": {
+        "kind": "generated_lavfi",
+        "lavfi": "aevalsrc=0.65*lt(mod(t\\,0.10)\\,0.002)|-0.55*lt(mod(t\\,0.073)\\,0.0015):s=48000",
+        "durationSeconds": 0.75,
+        "intermediateFormat": "pcm_s16le",
+        "license": "CC0-1.0"
+      },
+      "referenceBaseline": {
+        "sampleCount": 72000,
+        "rmsError": 1.250351339783799e-8,
+        "maxAbsoluteError": 2.384185791015625e-7,
+        "maxErrorSampleIndex": 88,
+        "channelRmsErrors": [
+          1.3608145890862267e-8,
+          1.1291326759634441e-8
+        ],
+        "channelMaxAbsoluteErrors": [
+          2.384185791015625e-7,
+          1.7881393432617188e-7
+        ]
+      },
+      "dartDecoderLimits": {
+        "rmsError": 0.000005,
+        "maxAbsoluteError": 0.00005
+      }
+    },
+    {
+      "name": "silence_mono_48000",
+      "description": "Silence exercises unused-floor and zero-residue paths.",
+      "categories": [
+        "silence",
+        "mono"
+      ],
+      "sampleRate": 48000,
+      "channels": 1,
+      "sourceFrames": 12000,
+      "decodedFrames": 12000,
+      "audioPackets": 14,
+      "initialTrimFrames": 128,
+      "encodedBitRate": 80000,
+      "quality": 3.0,
+      "streamSerial": 13009,
+      "oggFile": "test/fixtures/ogg/silence_mono_48000.ogg",
+      "referenceFile": "test/fixtures/reference_ffmpeg/silence_mono_48000.f32le",
+      "oggBytes": 3411,
+      "referenceBytes": 48000,
+      "oggSha256": "0b3559db442ffab2b628874c73d6d5afe7fb5d84b775adb211574f811567da2e",
+      "referenceSha256": "65640e71307e684779673395d835355bcd7d3128e76886603191f3965c731a93",
+      "stbReferenceSha256": "4416cb8dfcf34e93c138906ef9bac29bf4827d18bdc8bf1fd6cdf4ae83805019",
+      "source": {
+        "kind": "generated_lavfi",
+        "lavfi": "anullsrc=r=48000:cl=mono",
+        "durationSeconds": 0.25,
+        "intermediateFormat": "pcm_s16le",
+        "license": "CC0-1.0"
+      },
+      "referenceBaseline": {
+        "sampleCount": 12000,
+        "rmsError": 0.0,
+        "maxAbsoluteError": 0.0,
+        "maxErrorSampleIndex": -1,
+        "channelRmsErrors": [
+          0.0
+        ],
+        "channelMaxAbsoluteErrors": [
+          0.0
+        ]
+      },
+      "dartDecoderLimits": {
+        "rmsError": 0.000005,
+        "maxAbsoluteError": 0.00005
+      }
+    },
+    {
+      "name": "music_stereo_44100",
+      "description": "Recorded piano arpeggio with natural attacks and decays.",
+      "categories": [
+        "music",
+        "actual_recording",
+        "stereo",
+        "channel_coupling"
+      ],
+      "sampleRate": 44100,
+      "channels": 2,
+      "sourceFrames": 132300,
+      "decodedFrames": 132300,
+      "audioPackets": 157,
+      "initialTrimFrames": 128,
+      "encodedBitRate": 128000,
+      "quality": 4.0,
+      "streamSerial": 13010,
+      "oggFile": "test/fixtures/ogg/music_stereo_44100.ogg",
+      "referenceFile": "test/fixtures/reference_ffmpeg/music_stereo_44100.f32le",
+      "oggBytes": 39305,
+      "referenceBytes": 1058400,
+      "oggSha256": "4ba06d0c2debab4bb7cf04194e866f818a70de87f17f7d92c1796d151700610e",
+      "referenceSha256": "42f5464a29f3fec6c7325f6fcae6bf1f9a673ebec363635422dc64d192f670b9",
+      "stbReferenceSha256": "95c7cc96a0788965d5a66bf61350bda50588937763db59009106709696968272",
+      "source": {
+        "kind": "licensed_audio_excerpt",
+        "file": "tool/fixture_sources/salamander_phrase.flac",
+        "sha256": "e5b005b7b133fb7ee440b4707e8f1c5f9cae088cb5be744d7a57c9edbbfd7ac7",
+        "durationSeconds": 3.0,
+        "intermediateFormat": "pcm_s16le",
+        "license": "CC-BY-3.0",
+        "attribution": "Salamander Grand Piano v3, Alexander Holm"
+      },
+      "referenceBaseline": {
+        "sampleCount": 264600,
+        "rmsError": 9.265819963234089e-9,
+        "maxAbsoluteError": 1.043081283569336e-7,
+        "maxErrorSampleIndex": 11577,
+        "channelRmsErrors": [
+          6.816106532486148e-9,
+          1.1191583039049231e-8
+        ],
+        "channelMaxAbsoluteErrors": [
+          5.960464477539063e-8,
+          1.043081283569336e-7
+        ]
+      },
+      "dartDecoderLimits": {
+        "rmsError": 0.000005,
+        "maxAbsoluteError": 0.00005
+      }
+    },
+    {
+      "name": "long_stereo_48000",
+      "description": "Ten-second stereo chirps exercise sustained decoder state.",
+      "categories": [
+        "long",
+        "stereo",
+        "tone"
+      ],
+      "sampleRate": 48000,
+      "channels": 2,
+      "sourceFrames": 480000,
+      "decodedFrames": 480000,
+      "audioPackets": 471,
+      "initialTrimFrames": 128,
+      "encodedBitRate": 112000,
+      "quality": 3.0,
+      "streamSerial": 13011,
+      "oggFile": "test/fixtures/ogg/long_stereo_48000.ogg",
+      "referenceFile": "test/fixtures/reference_ffmpeg/long_stereo_48000.f32le",
+      "oggBytes": 39537,
+      "referenceBytes": 3840000,
+      "oggSha256": "7728c77c5086038762adb2a10aeb1748bdd3aecab73f5eb756a9c36be44c156d",
+      "referenceSha256": "1a216c9df3850522516f40313a231eb66f24c5f66c6f68bf941286e76f4cea13",
+      "stbReferenceSha256": "7595cd0dd834a5cd2f46312d077f85dc5b494d941e9ba4f5aa2b34e5dbab9fe3",
+      "source": {
+        "kind": "generated_lavfi",
+        "lavfi": "aevalsrc=0.25*sin(2*PI*(220+20*t)*t)|0.25*sin(2*PI*(330+13*t)*t):s=48000",
+        "durationSeconds": 10.0,
+        "intermediateFormat": "pcm_s16le",
+        "license": "CC0-1.0"
+      },
+      "referenceBaseline": {
+        "sampleCount": 960000,
+        "rmsError": 2.7137821974983564e-8,
+        "maxAbsoluteError": 1.7881393432617188e-7,
+        "maxErrorSampleIndex": 669170,
+        "channelRmsErrors": [
+          2.7036316069771265e-8,
+          2.723894962121759e-8
+        ],
+        "channelMaxAbsoluteErrors": [
+          1.7881393432617188e-7,
+          1.4901161193847656e-7
+        ]
+      },
+      "dartDecoderLimits": {
+        "rmsError": 0.000005,
+        "maxAbsoluteError": 0.00005
+      }
+    }
+  ]
+}

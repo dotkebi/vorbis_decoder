@@ -1,0 +1,26 @@
+# Dart and test outputs.
+.dart_tool/
+build/
+coverage/
+pubspec.lock
+
+# Local porting and validation work log.
+PORTING-STATUS.md
+
+# Local JavaScript and Wasm smoke-build outputs.
+out.js
+out.js.deps
+out.js.map
+tool/web_smoke.mjs
+tool/web_smoke.support.js
+tool/web_smoke.wasm
+tool/web_smoke.wasm.map
+
+# Large validation references remain available in the source repository.
+test/fixtures/reference_ffmpeg/
+tool/fixture_sources/*.flac
+
+# Editor and operating-system metadata.
+.DS_Store
+.idea/
+.vscode/
