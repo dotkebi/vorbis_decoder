@@ -3,6 +3,9 @@
 build/
 coverage/
 pubspec.lock
+dev/
+tool/benchmark_ffi_comparison.sh
+tool/test_ffi_comparison.sh
 
 # Local porting and validation work log.
 PORTING-STATUS.md

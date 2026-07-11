@@ -193,13 +193,22 @@ The following values are p50 measurements from an AOT executable on macOS
 The pure Dart decoder is comfortably faster than real time for representative
 inputs, but is approximately 15–35 times slower than FFI.
 
+From a repository checkout, run the published-FFI comparison test with:
+
+```sh
+./tool/test_ffi_comparison.sh
+```
+
 To reproduce the benchmark:
 
 ```sh
-cd ../12vorbis-ffi
-dart compile exe tool/benchmark_compare.dart -o build/benchmark_compare
-build/benchmark_compare
+./tool/benchmark_ffi_comparison.sh
 ```
+
+Both scripts use the isolated package under `dev/ffi_compare`, resolve
+`vorbis_decoder_ffi` from pub.dev, and compile its published C source into a
+host library. The root `vorbis_decoder` package therefore remains independent
+of Flutter, and `dev/` is excluded from the published archive.
 
 ## Memory
 
